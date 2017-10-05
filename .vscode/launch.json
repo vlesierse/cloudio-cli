@@ -1,0 +1,47 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Deploy sava 1.0.0",
+                "program": "${workspaceRoot}/index.js",
+                "args": [ "deploy",
+                    "sava", "sava:1.0.0",
+                    "--cluster", "sava",
+                    "--breed", "sava",
+                    "--deployable", "magneticio/sava:1.0.0" ],
+                "env": {
+                    "VAMP_HOST": "http://localhost:8001/api/v1/proxy/namespaces/default/services/vamp"
+                },
+                "skipFiles": [ "<node_internals>/**" ]
+            },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Deploy sava 1.1.0",
+                "program": "${workspaceRoot}/index.js",
+                "args": [ "deploy",
+                    "sava", "sava:1.1.0",
+                    "--cluster", "sava",
+                    "--breed", "sava",
+                    "--deployable", "magneticio/sava:1.1.0" ],
+                "env": {
+                    "VAMP_HOST": "http://localhost:8001/api/v1/proxy/namespaces/default/services/vamp"
+                },
+                "skipFiles": [ "<node_internals>/**" ]
+            },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Test",
+                "program": "${workspaceRoot}/index.js",
+                "args": [ "test" ],
+                "env": {
+                    "VAMP_HOST": "http://localhost:8001/api/v1/proxy/namespaces/default/services/vamp"
+                },
+                "skipFiles": [ "<node_internals>/**" ]
+            }
+        ]
+    }

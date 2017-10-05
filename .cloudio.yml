@@ -1,0 +1,21 @@
+vamp:
+  blueprint:
+    name: sava
+    clusters:
+      sava:
+        services:
+        - breed:
+            name: sava
+            deployable: magneticio/sava:1.0.0
+            ports:
+              web: 8080/http
+          scale:
+            cpu: 0.2
+            memory: 64MB
+            instances: 1
+  gateway:
+    name: sava
+    port: 9050/http
+    routes:
+      sava/sava/web:
+        weight: 100%
