@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const program = require('commander')
 const commands = require('./src/commands')
 const packageJson = require('./package.json')
