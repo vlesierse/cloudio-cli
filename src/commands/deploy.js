@@ -2,6 +2,7 @@ const fs = require('fs');
 const uuid = require('uuid/v4');
 const vamp = require('../api/vamp')();
 const YAML = require('yamljs');
+const sleep = require('../threading').sleep;
 const waitFor = require('../threading').waitFor;
 const handlebars = require('handlebars');
 const handleError = require('../logging').handleError;
@@ -125,6 +126,7 @@ const migrateGateway = async (deployment, service, configuration) => {
     console.log(`Deleted workflow ${workflow.name}`);
     if (migrated) {
         var sourceService = sourceRoute.split('/')[2];
+        sleep(5000);
         await vamp.deployment.undeploy(deployment, sourceService);
         console.log(`Removed service ${sourceService} from deployment ${deployment}`);
         console.log(`Migrated gateway ${gateway.name} from ${sourceRoute} to ${targetRoute}`);
