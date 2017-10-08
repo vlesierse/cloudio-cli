@@ -3,6 +3,7 @@ const uuid = require('uuid/v4');
 const vamp = require('../api/vamp')();
 const YAML = require('yamljs');
 const waitFor = require('../threading').waitFor;
+const handlebars = require('handlebars');
 const handleError = require('../logging').handleError;
 
 const updateDeployment = async (deployment, service, configuration, options) => {
@@ -152,7 +153,10 @@ const readConfiguration = file => {
     if (!fs.existsSync(file)) {
         throw `Deployment file ${file} not found`;
     }
-    let configuration = YAML.parse(fs.readFileSync(file, 'utf-8'));
+    var content = fs.readFileSync(file, 'utf-8');
+    var template = handlebars.compile(content);
+    content = template(process.env);
+    let configuration = YAML.parse(content);
     return Object.assign({ }, defaults, configuration);
 }
 
@@ -185,5 +189,7 @@ module.exports = (program) => {
             }
         });
     program.command('test').action(async (options) => {
+        let configuration = readConfiguration(defaults.file);
+        console.log("Done");
     });
 }
