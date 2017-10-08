@@ -126,7 +126,7 @@ const migrateGateway = async (deployment, service, configuration) => {
     console.log(`Deleted workflow ${workflow.name}`);
     if (migrated) {
         var sourceService = sourceRoute.split('/')[2];
-        sleep(5000);
+        await sleep(5000);
         await vamp.deployment.undeploy(deployment, sourceService);
         console.log(`Removed service ${sourceService} from deployment ${deployment}`);
         console.log(`Migrated gateway ${gateway.name} from ${sourceRoute} to ${targetRoute}`);
@@ -173,7 +173,8 @@ module.exports = (program) => {
         .option('-d, --deployable <image>', 'Deployable to replace in the blueprint')
         .action(async (deployment, service, options) => {
             if (!options.deployable || !options.breed) {
-                return console.log('Please provide options for <deployable>, <breed> for deployment')
+                console.log('Please provide options for <deployable>, <breed> for deployment');
+                process.exit(1);
             } else {
                 let configuration = readConfiguration(options.file || defaults.file);
                 try {
@@ -187,11 +188,12 @@ module.exports = (program) => {
                     }
                     return;
                 }
-                updateDeployment(deployment, service, configuration, options);
+                try {
+                    await updateDeployment(deployment, service, configuration, options);
+                } catch (err) {
+                    handleError(err);
+                    process.exit(1);
+                }
             }
         });
-    program.command('test').action(async (options) => {
-        let configuration = readConfiguration(defaults.file);
-        console.log("Done");
-    });
 }
