@@ -110,8 +110,8 @@ const migrateGateway = async (deployment, service, configuration) => {
         }
     }
     if (configuration.deployment.strategy.metric.name && configuration.deployment.strategy.metric.expression) {
-            workflow.environment_variables['METRIC_NAME'] = configuration.deployment.strategy.metric.name;
-            workflow.environment_variables['METRIC_EXPRESSION'] = configuration.deployment.strategy.metric.expression;
+            workflow.environment_variables.METRIC_NAME = configuration.deployment.strategy.metric.name;
+            workflow.environment_variables.METRIC_EXPRESSION = configuration.deployment.strategy.metric.expression;
     }
     await vamp.workflow.create(workflow);
     console.log(`Created migration workflow ${workflow.name}`);
