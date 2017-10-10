@@ -122,7 +122,6 @@ const migrateGateway = async (deployment, service, configuration) => {
         }
         return events.find(e => e.tags.indexOf('finished') >= 0);
     }, configuration.deployment.strategy.timeout * 1000, 5 * 1000);
-    await sleep(2 * 60 * 1000);
     await vamp.workflow.delete(workflow.name);
     console.log(`Deleted workflow ${workflow.name}`);
     if (migrated) {
@@ -133,7 +132,7 @@ const migrateGateway = async (deployment, service, configuration) => {
         console.log(`Migrated gateway ${gateway.name} from ${sourceRoute} to ${targetRoute}`);
     } else {
         await vamp.deployment.undeploy(deployment, service);
-        console.error(`Migration aborted. Rolled back gateway ${gateway.name} to ${sourceRoute}`);
+        throw `Migration aborted. Rolled back gateway ${gateway.name} to ${sourceRoute}`;
     }
 }
 
